@@ -8,7 +8,7 @@
 /vendor/
 ###< symfony/framework-bundle ###
 
-###> exclusions/customs ###
+###> exclusions customs ###
 .idea/
 /migrations/*.php
 ###< exclusions customs ###
