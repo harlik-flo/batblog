@@ -50,6 +50,12 @@
 
                     {# Boutons quand l'utilisateur n'est pas connecté #}
                 {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link{{ route == 'app_register' ? ' active' }}" href="{{ path('app_register') }}">
+                            <i class="fa-solid fa-user-plus"></i>
+                            inscription
+                        </a>
+                    </li>
 
                     <li class="nav-item">
                         <a class="nav-link{{ route == 'app_login' ? ' active' }}" href="{{ path('app_login') }}">
@@ -65,7 +71,7 @@
             {# Formulaire de recherche #}
             <form class="d-flex">
                 <input class="form-control me-2" type="search" placeholder="Trouver un article" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">
+                <button class="btn btn-outline-danger" type="submit">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
             </form>
