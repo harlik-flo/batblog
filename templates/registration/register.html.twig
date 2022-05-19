@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Créer un compte{% endblock %}
-
+{% block head %}<script src="https://www.google.com/recaptcha/api.js" ></script>{% endblock %}
 {% block body %}
 <div class="container-fluid">
 
@@ -10,8 +10,32 @@
     </div>
     <div class="row">
         <div class="col-12 col-md-8 col-lg-4 mx-auto">
-{#            TODO: ajouter le captcha#}
-            {{ form(registrationForm) }}
+
+{#             le captcha#}
+
+{#            Ouverture du formulaire #}
+        {{ form_start(registrationForm) }}
+
+{#            Affichage des erreurs#}
+            <div class="mb-3">
+                {{ form_errors(registrationForm) }}
+            </div>
+
+{#            Affichage des email#}
+            {{ form_row( registrationForm.email) }}
+{#            Affichage du mot de passe et de la vérif#}
+            {{ form_row( registrationForm.plainPassword) }}
+{#            Affichage du pseudonym#}
+            {{ form_row( registrationForm.pseudonym) }}
+{#            Affichage du recaptcha#}
+            <div class="mb-3">
+                <div class="mb-2">Captcha de sécurité</div>
+                <div class="g-recaptcha" data-sitekey="{{ google_recaptcha_site_key }}"></div>
+            </div>
+{#            affichage du boutton#}
+            {{ form_row( registrationForm.save) }}
+{#            fermeture du formulaire#}
+        {{ form_end(registrationForm) }}
 
         </div>
     </div>
