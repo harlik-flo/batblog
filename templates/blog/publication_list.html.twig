@@ -17,6 +17,30 @@
             <div class="col-12 col-md-8 mx-auto">
 
 
+                {# Affichage du nombre total d'articles #}
+
+                <div class="row">
+                    <p class="col-12 col-md-8 mx-auto" >Nombre total d'articles : {{ articles.getTotalItemCount() }}</p>
+                </div>
+
+                {# Affichage du menu de navigation, seulement s'il y a des articles #}
+                {% if articles is not empty %}
+
+                    <div class="row">
+
+                        <div class="col-12 my-3 text-center">
+
+                            <div class="d-inline-block">
+                                {{  knp_pagination_render(articles) }}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+
                 {% for article in articles %}
                     {# Un article #}
                     <div class="row">
@@ -26,7 +50,7 @@
                             <div class="card my-3 bg-black">
 
                                 <div class="card-header">
-                                    <a href="{{ path('blog_publication_view', {'id': 'article.id', 'slug': 'article.slug'}) }}" class="text-decoration-none">
+                                    <a href="{{ path('blog_publication_view', {'id': article.id, 'slug': article.slug}) }}" class="text-decoration-none">
                                         <i class="far fa-newspaper me-2"></i>
                                         {{ article.title }}
                                     </a>
@@ -37,7 +61,7 @@
                                     <div class="mb-2">
 
                                         {{ article.content|striptags|excerpt(100) }}
-                                        <a class="text-decoration-none" href="{{ path('blog_publication_view', {'id': 'article.id', 'slug': 'article.slug'}) }}">Lire la suite</a>
+                                        <a class="text-decoration-none" href="{{ path('blog_publication_view', {'id': article.id, 'slug': article.slug}) }}">Lire la suite</a>
 
                                     </div>
 
@@ -60,6 +84,23 @@
 
 
                 {% endfor %}
+
+                {# Affichage du menu de navigation, seulement s'il y a des articles #}
+                {% if articles is not empty %}
+
+                    <div class="row">
+
+                        <div class="col-12 my-3 text-center">
+
+                            <div class="d-inline-block">
+                                {{  knp_pagination_render(articles) }}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
 
 
             </div>

@@ -40,7 +40,7 @@
                             <div class="card my-3 bg-black">
 
                                 <div class="card-header">
-                                    <a href="{{ path('blog_publication_view', {'id': 'article.id', 'slug': 'article.slug'}) }}" class="text-decoration-none">
+                                    <a href="{{ path('blog_publication_view', {'id': article.id, 'slug':article.slug}) }}" class="text-decoration-none">
                                         <i class="far fa-newspaper me-2"></i>
                                         {{ article.title }}
                                     </a>
@@ -51,7 +51,7 @@
                                     <div class="mb-2">
 
                                         {{ article.content|striptags|excerpt(50) }}
-                                        <a class="text-decoration-none" href="{{ path('blog_publication_view', {'id': 'article.id', 'slug': 'article.slug'}) }}">Lire la suite</a>
+                                        <a class="text-decoration-none" href="{{ path('blog_publication_view', {'id': article.id, 'slug':article.slug}) }}">Lire la suite</a>
 
                                     </div>
 
