@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\Comment;
+use App\Form\CreateCommentFormType;
 use App\Form\NewArticleFormType;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
@@ -73,12 +75,15 @@ class BlogController extends AbstractController
     #[ParamConverter('article', options: ['mapping' => ['id' => 'id', 'slug' => 'slug'] ])]
     public function publicationView(Article $article): Response
     {
+        $newComment = new Comment();
+
+        $form = $this->createForm(CreateCommentFormType::class, $newComment);
 
         return $this->render('blog/publication_view.html.twig', [
 
-            'article' => $article]
-
-        );
+            'article' => $article,
+            'form_comment' => $form->createView()
+            ]);
     }
 
     /*
@@ -185,4 +190,6 @@ class BlogController extends AbstractController
             ]);
 
     }
+
+
 }
