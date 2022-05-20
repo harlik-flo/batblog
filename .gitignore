@@ -11,4 +11,10 @@
 ###> exclusions customs ###
 .idea/
 /migrations/*.php
+/public/images/profils/*
+!public/images/profils/.gitignore
 ###< exclusions customs ###
+
+###> liip/imagine-bundle ###
+/public/media/cache/
+###< liip/imagine-bundle ###
