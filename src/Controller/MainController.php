@@ -26,7 +26,6 @@ class MainController extends AbstractController
             ['publicationDate' => 'DESC'],  // ORDER BY du SELECT
             $this->getParameter('app.article.last_article_number_home'), // LIMIT du SELCET (qu'on récupère dans le services.yaml)
         );
-        dump( $articles);
 
         return $this->render('main/home.html.twig', [
             'articles' => $articles,
