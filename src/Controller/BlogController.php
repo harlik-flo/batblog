@@ -118,6 +118,7 @@ class BlogController extends AbstractController
      * */
 
     #[Route('/publication/suppression/{id}', name: 'publication_delete', priority: 10)]
+    #[IsGranted('ROLE_ADMIN')]
     public function publicationDelete(Article $article, ManagerRegistry $doctrine, Request $request): Response
     {
 
@@ -141,5 +142,47 @@ class BlogController extends AbstractController
 
         // Redirection vers la page qui liste les articles
         return $this->redirectToRoute('blog_publication_list');
+    }
+
+    /*
+     * Controleur de la page admin servant à modifier un article via son id dans l'url
+     *
+     * Accès reserver aux administrateur (ROLE_ADMIN)
+     * */
+
+    #[Route('/publication/modifier/{id}', name: 'publication_edit', priority: 10)]
+    #[IsGranted('ROLE_ADMIN')]
+    public function publicationmodify(Article $article, ManagerRegistry $doctrine, Request $request, SluggerInterface $slugger): Response
+    {
+        // Instanciation d'un nouveau formulaire basé sur $article qui contient déja les données actuelle de l'article à modifier
+        $form = $this->createForm(NewArticleFormType::class, $article);
+
+        $form->handleRequest($request);
+
+        //formulaire est envoyé et sans erreur
+        if($form->isSubmitted() && $form->isValid()){
+
+            //Sauvegarder des donnés modifié en BDD
+            $article->setSlug($slugger->slug( $article->getTitle() )->lower());
+            $em = $doctrine->getManager();
+            $em->flush();
+
+            //Message flash de succès
+            $this->addFlash('success', 'Publication modifiée avec succès !');
+
+            //redirection vers l'article modifié
+            return $this->redirectToRoute('blog_publication_view', [
+                'id' => $article->getId(),
+                'slug' => $article->getSlug(),
+            ]);
+        }
+
+
+
+        // Redirection vers la page qui liste les articles
+        return $this->render('blog/publication_edit.html.twig', [
+            'form' => $form->createView(),
+            ]);
+
     }
 }
