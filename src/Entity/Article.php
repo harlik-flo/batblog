@@ -31,7 +31,7 @@ class Article
     #[ORM\Column(type: 'string', length: 150)]
     private $slug;
 
-    #[ORM\OneToMany(mappedBy: 'article', targetEntity: Comment::class)]
+    #[ORM\OneToMany(mappedBy: 'article', targetEntity: Comment::class, orphanRemoval: true)]
     private $comments;
 
     public function __construct()

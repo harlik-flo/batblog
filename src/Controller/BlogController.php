@@ -11,6 +11,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException;
@@ -73,11 +74,46 @@ class BlogController extends AbstractController
      * */
     #[Route('/publication/{id}/{slug}/', name: 'publication_view')]
     #[ParamConverter('article', options: ['mapping' => ['id' => 'id', 'slug' => 'slug'] ])]
-    public function publicationView(Article $article): Response
+    public function publicationView(Article $article,Request $request, ManagerRegistry $doctrine): Response
     {
+        if (!$this->getUser()){
+            return $this->render('blog/new_publication.html.twig', [
+                'article' => $article,
+            ]);
+        }
+
         $newComment = new Comment();
 
         $form = $this->createForm(CreateCommentFormType::class, $newComment);
+
+        $form->handleRequest($request);
+
+//        si c'est valid on l'envoy
+        if ($form->isSubmitted()&&$form->isValid()){
+
+            $newComment
+                ->setPublicationDate(new \DateTime())
+                ->setAuthor($this->getUser())
+                ->setArticle($article)
+                ;
+
+            $em = $doctrine->getManager();
+            $em->persist($newComment);
+            $em->flush();
+
+
+            $this->addFlash('success','Votre commentaire a bien été publié.' );
+
+           // réinitialisation de la variable $form
+
+            unset($newComment);
+            unset($form);
+
+            $newComment = new Comment();
+            $form = $this->createForm(CreateCommentFormType::class, $newComment);
+
+        }
+
 
         return $this->render('blog/publication_view.html.twig', [
 
@@ -189,6 +225,14 @@ class BlogController extends AbstractController
             'form' => $form->createView(),
             ]);
 
+    }
+
+    private function handleRequest(Request $request)
+    {
+    }
+
+    private function isSubmitType()
+    {
     }
 
 
