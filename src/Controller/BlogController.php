@@ -235,5 +235,28 @@ class BlogController extends AbstractController
     {
     }
 
+// Controleur de la page permettant de supprimer un commentaire
 
+    #[Route('/commentaire/suppression/{id}/', name: 'comment_delete')]
+    #[isGranted('ROLE_ADMIN')]
+    public function commentDelete(Comment $comment, Request $request, ManagerRegistry $doctrine): Response{
+
+        // si le token csrf n'est pas valide
+
+        if (!$this->isCsrfTokenValid('blog_comment_delete'. $comment->getId(), $request->query->get('csrf_token')))
+        {
+            $this->addFlash('error','Le Token de sécurité n\'est pas valide veuillez ré-essayer' );
+        }else{
+
+
+        $em = $doctrine->getManager();
+        $em->remove($comment);
+        $em->flush();
+        }
+        $this->addFlash('success', 'La publication a été supprimée avec succès !');
+        return $this->redirectToRoute('blog_publication_view', [
+            'id' => $comment->getArticle()->getId(),
+            'slug' => $comment->getArticle()->getSlug(),
+        ]);
+    }
 }

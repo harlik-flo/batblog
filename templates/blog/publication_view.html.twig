@@ -66,7 +66,7 @@
                 {# Espace commentaire #}
                 <div class="row">
 
-                    <div class="col-12 col-md-8 mx-auto">
+                    <div class="col-12 mx-auto">
 
                         <div class="bg-black p-4 my-4">
 
@@ -101,7 +101,17 @@
                                             <p>{{ comment.content|nl2br }}</p>
 
                                         </div>
+                                        {# si l'utilisateur est admin affichage du bouton supprimer #}
+                                        {% if is_granted('ROLE_ADMIN') %}
+                                            <div class="admin-button">
 
+                                                <a href="{{ path('blog_comment_delete', {'id': comment.id, 'csrf_token': csrf_token('blog_comment_delete'~ comment.id)}) }}" class="text-decoration-none text-danger" onclick="return confirm('ête vous sur de vouloir supprimer le commentaires ?')" >
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                    Supprimer</a>
+                                                
+                                            </div>
+                                        {% endif %}
+                                        
                                     </div>
                                 </div>
 
