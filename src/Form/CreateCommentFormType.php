@@ -50,10 +50,7 @@ class CreateCommentFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Comment::class,
-//            TODO: a enlever
-            'attr' => [
-                'novalidate' => 'novalidate',
-            ]
+
         ]);
     }
 }
